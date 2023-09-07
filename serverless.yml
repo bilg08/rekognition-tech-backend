@@ -12,15 +12,28 @@ provider:
           Action:
           - 's3:*'
           - 'rekognition:CompareFaces'
+          - 'rekognition:DetectText'
+
 
 functions:
   getPresignedUrl:
     handler: handler/s3/getPresignedUrl.handler
     events:
         - http:
-              path: /getpresignedUrl
+              path: /getPreSignedUrl
               method: POST
-
+  detectTextFromImage:
+    handler: handler/rekognition/detectText.handler
+    events:
+        - http:
+              path: /detectTextFromImage
+              method: POST
+  compareFaces:
+    handler: handler/rekognition/compareFaces.handler
+    events:
+        - http:
+              path: /compareFaces
+              method: POST
 resources:
   Resources:
     BilguunTechBucket:
