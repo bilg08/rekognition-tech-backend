@@ -1,29 +1,34 @@
-const aws = require('aws-sdk');
-const { response } = require('../../utils/index.js');
+const aws = require("aws-sdk");
+const { response } = require("../../utils/index.js");
 const bucketName = "bilguun-tech-bucket";
 
 module.exports.handler = async (event) => {
   console.log("Event: ", event);
-  const { sourcePath, targetPath } = JSON.parse(event.body);
+  const { sourcePath, targetPath } = event.body;
 
   const rekognition = new aws.Rekognition();
-  const res = await rekognition.compareFaces({
-     SourceImage: {
-         S3Object: {
-           Bucket: bucketName,
-           Name: sourcePath
-         },
-     },
-     TargetImage: {
+  const res = await rekognition
+    .compareFaces({
+      SimilarityThreshold: 80,
+      SourceImage: {
         S3Object: {
-            Bucket: bucketName,
-            Name: targetPath
-        }
-    }
-  }).promise();
-  const { Similarity } = res?.FaceMatches[0];
-  
-  const isSimilar = Similarity > 50;
+          Bucket: bucketName,
+          Name: sourcePath,
+        },
+      },
+      TargetImage: {
+        S3Object: {
+          Bucket: bucketName,
+          Name: targetPath,
+        },
+      },
+    })
+    .promise();
 
-  return response(200, {isSimilar});
-}
+  let isSimilar = false;
+  if (res?.FaceMatches.length > 0) {
+    isSimilar = true;
+  }
+
+  return response(200, { isSimilar });
+};

@@ -1,5 +1,5 @@
 service: serverlessbackend
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -10,43 +10,49 @@ provider:
         - Effect: "Allow"
           Resource: "*"
           Action:
-          - 's3:*'
-          - 'rekognition:CompareFaces'
-          - 'rekognition:DetectText'
-
+            - "s3:*"
+            - "rekognition:CompareFaces"
+            - "rekognition:DetectText"
+            - "lambda:InvokeFunction"
 
 functions:
   getPresignedUrl:
     handler: handler/s3/getPresignedUrl.handler
     events:
-        - http:
-              path: /getPreSignedUrl
-              method: POST
+      - http:
+          path: /getPreSignedUrl
+          method: POST
   detectTextFromImage:
     handler: handler/rekognition/detectText.handler
     events:
-        - http:
-              path: /detectTextFromImage
-              method: POST
+      - http:
+          path: /detectTextFromImage
+          method: POST
   compareFaces:
     handler: handler/rekognition/compareFaces.handler
     events:
-        - http:
-              path: /compareFaces
-              method: POST
+      - http:
+          path: /compareFaces
+          method: POST
+  getResult:
+    handler: handler/main.handler
+    events:
+      - http:
+          path: /getResult
+          method: POST
 resources:
   Resources:
     BilguunTechBucket:
       Type: AWS::S3::Bucket
-      Properties: 
+      Properties:
         BucketName: bilguun-tech-bucket
         CorsConfiguration:
           CorsRules:
             - AllowedHeaders:
-                - '*'
+                - "*"
               AllowedMethods:
                 - PUT
                 - GET
                 - POST
               AllowedOrigins:
-                - '*'
+                - "*"
