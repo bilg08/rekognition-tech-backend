@@ -1,0 +1,39 @@
+service: serverlessbackend
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Resource: "*"
+          Action:
+          - 's3:*'
+          - 'rekognition:CompareFaces'
+
+functions:
+  getPresignedUrl:
+    handler: handler/s3/getPresignedUrl.handler
+    events:
+        - http:
+              path: /getpresignedUrl
+              method: POST
+
+resources:
+  Resources:
+    BilguunTechBucket:
+      Type: AWS::S3::Bucket
+      Properties: 
+        BucketName: bilguun-tech-bucket
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - PUT
+                - GET
+                - POST
+              AllowedOrigins:
+                - '*'
