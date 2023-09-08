@@ -17,7 +17,7 @@ module.exports.handler = async (event) => {
     };
     const res = await rekognition.detectText(params).promise();
     const texts = res?.TextDetections?.map((item) => item.DetectedText);
-    return response(200, texts);
+    return response(200, { texts });
   } catch (err) {
     console.log(err, "ERROR");
     return;
