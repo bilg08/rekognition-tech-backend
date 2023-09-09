@@ -22,24 +22,29 @@ functions:
       - http:
           path: /getPreSignedUrl
           method: POST
+          cors:
+            origin: "*"
   detectTextFromImage:
     handler: handler/rekognition/detectText.handler
     events:
       - http:
           path: /detectTextFromImage
           method: POST
+          cors: true
   compareFaces:
     handler: handler/rekognition/compareFaces.handler
     events:
       - http:
           path: /compareFaces
           method: POST
+          cors: true
   getResult:
     handler: handler/main.handler
     events:
       - http:
           path: /getResult
           method: POST
+          cors: true
 resources:
   Resources:
     BilguunTechBucket:
