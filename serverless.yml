@@ -1,4 +1,6 @@
 service: serverlessbackend
+plugins:
+  - serverless-dotenv-plugin
 frameworkVersion: "3"
 
 provider:
@@ -30,21 +32,42 @@ functions:
       - http:
           path: /detectTextFromImage
           method: POST
-          cors: true
+          cors:
+            origin: "*"
   compareFaces:
     handler: handler/rekognition/compareFaces.handler
     events:
       - http:
           path: /compareFaces
           method: POST
-          cors: true
+          cors:
+            origin: "*"
   getResult:
     handler: handler/main.handler
     events:
       - http:
           path: /getResult
           method: POST
-          cors: true
+          cors:
+            origin: "*"
+  createProfile:
+    handler: handler/profile/createProfile.handler
+    timeout: 15
+    events:
+      - http:
+          path: /createProfile
+          method: POST
+          cors:
+            origin: "*"
+  getProfile:
+    handler: handler/profile/getProfile.handler
+    timeout: 15
+    events:
+      - http:
+          path: /getProfile
+          method: GET
+          cors:
+            origin: "*"
 resources:
   Resources:
     BilguunTechBucket:

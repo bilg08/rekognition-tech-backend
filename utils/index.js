@@ -1,4 +1,15 @@
 const aws = require("aws-sdk");
+module.exports.connectMongo = async () => {
+  const mongoose = require("mongoose");
+  console.log(process.env.MONGO_URI);
+  const conn = await mongoose
+    .connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .catch((err) => console.log(err));
+  console.log(conn.connection.host);
+};
 
 module.exports.response = (statusCode, message) => {
   const success = statusCode === 200 ? true : false;

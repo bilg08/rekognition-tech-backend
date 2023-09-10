@@ -1,7 +1,11 @@
 {
   "dependencies": {
     "aws-sdk": "^2.1452.0",
+    "mongoose": "^7.5.0",
     "nanoid": "^2.1.11",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0"
   }
 }

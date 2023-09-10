@@ -24,7 +24,7 @@ module.exports.handler = async (event) => {
       },
     })
     .promise();
-
+  console.log(res);
   let isSimilar = false;
   if (res?.FaceMatches.length > 0) {
     isSimilar = true;

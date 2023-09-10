@@ -28,7 +28,9 @@ module.exports.handler = async (event) => {
       bucket: "bilguun-tech-bucket",
     },
   );
-
+  const thumbnail = `https://bilguun-tech-bucket.s3.amazonaws.com/${targetPath}`;
   const userInfo = convertUserInfo(texts);
-  return response(200, userInfo);
+  if (!userInfo.lastName || !userInfo.firstName || !userInfo.registrationNumber)
+    return response(400, "Иргэний үнэмлэхний зураг биш байна");
+  return response(200, { ...userInfo, thumbnail });
 };
